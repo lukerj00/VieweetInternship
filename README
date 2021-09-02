@@ -1,0 +1,7 @@
+This repository contains:
+
+0. README
+1. offline_code: Will's pytorch code edited to run with a local sample dataset, in an offline environment
+2. MongoDB_all: Scripts for editing the MongoDB database within the Mongosh shell; simple example queries
+3. PyMongo_test: WIP scripts for extracting data from MDB to python and running basic control loops
+4. Minutes_misc: Minutes from group / individual meetings, and other miscellaneous notes 
