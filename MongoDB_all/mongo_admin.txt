@@ -1,0 +1,100 @@
+// general connection procedure (from cmd / mongosh):
+
+1. Connect to Atlas cluster:
+mongo "mongodb+srv://<username>:<password>@<cluster>.mongodb.net/admin" // or just paste srv connection string (see https://docs.mongodb.com/manual/reference/connection-string/) in to Compass
+
+2. Navigate to relevant collection:
+use <collection>
+
+// importing / exporting DBs:
+/JSON:
+mongoimport
+mongoexport
+
+BSON:
+mongorestore
+mongodump
+
+// import multiple json files at once:
+C:\MongoDB\Server\3.0\bin>
+  for %i in (C:\Users\lukej\Documents\VieweetInternship\DataForLuke-20210816T212605Z-001\DataForLuke\models) do 
+    mongoimport --file %i --type json --db vieweet_prototype_01 --collection models
+
+// merge collections:
+db.collection1.aggregate([{
+    $lookup: {
+            from: "collection2",
+            localField: "classifier",
+            foreignField: "classifier",
+            as: "new_field"
+        }
+},
+{ "$unwind": "$new_field" },
+{$out: "new_collection"}
+])
+
+//eg. :
+db.models_small.aggregate([{
+    $lookup: {
+            from: "models_small",
+            localField: "classifier",
+            foreignField: "classifier",
+            as: "new_field"
+        }
+},
+{ "$unwind": "$new_field" },
+{$out: "models_small"}
+])
+
+db.models_small.aggregate([
+   {
+      $lookup: {
+         from: "models_small3",
+         localField: "classifier",    // field in the orders collection
+         foreignField: "classifier",  // field in the items collection
+         as: "fromItems"
+      }
+   },
+   {
+      $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$fromItems", 0 ] }, "$$ROOT" ] } }
+   },
+   { $project: { fromItems: 0 } },
+	{$out: models_small}
+])
+
+// rename collection
+db.collection.renameCollection(target, dropTarget)
+
+// delete collection
+db.collection.drop()
+
+//CRUD (create, read, update, delete https://docs.mongodb.com/manual/crud/)
+
+// create (insert) document(s)
+db.collection.insertOne()
+db.collection.insertMany()
+
+// read queries on separate 'test_queries' file
+
+// update document(s)
+db.collection.updateOne()
+db.collection.updateMany()
+db.collection.replaceOne()
+
+// delete document(s)
+db.collection.deleteOne()
+db.collection.deleteMany()
+
+// check server status / ports:
+db.serverCmdLineOpts()
+db.runCommand({whatsmyuri : 1})
+
+db.getMongo() // Use this command to test that the mongo shell has a connection to the proper database instance
+db.collection.explain() // Returns serverInfo information for the MongoDB instance
+
+// setting up pymongo connection
+1. whitelist IP to Atlas cluster
+2. create user to log in, if not already
+
+// rename collection
+b.collection.renameCollection()
