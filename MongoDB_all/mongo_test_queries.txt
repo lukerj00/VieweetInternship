@@ -1,0 +1,19 @@
+// basic queries, using the "models" collection as an example
+
+// simple test:
+db.models.findOne()
+
+// read queries (find)
+db.models.find({"n_classes": 4}).pretty() // pretty() improves formatting
+db.models.find({"n_classes": 5}, {"confusion matrix": 1, "n_classes": 1}).pretty() // only projects certain fields to the output
+db.grades.find({ "n_classes": 3 }, { "confusion matrix": { "$elemMatch": { "matrix.0": { "$gt": 1000 } } } }).pretty() // returns models where any element within the first column of the CM is greater than 1000
+
+// comparison / logic operators:
+db.models.find({"accuracy" : {"$gte": 0.90}}).count() // returns models with an accuracy greater than that specified. Other comparison operators include $eq, $lt etc.
+
+db.models.find({"$gte" : ["$confusion matrix.matrix.1.1", "$confusion matrix.matrix.0.0"]}).count() // returns models where the first element of the diagonal is greater than the second
+
+// aggregation pipeline (multiple stages) - note different convention when using comparison operators
+db.models.find({"$expr": {"$gte" : ["$confusion matrix.matrix.1.1", "$confusion matrix.matrix.0.0"]}}).count()
+
+db.models.count({"$eq" : ["$permalink", "$twitter_username"]}).count()
