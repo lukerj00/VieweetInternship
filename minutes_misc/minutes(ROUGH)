@@ -1,0 +1,332 @@
+12/07: Min
+
+Install things on own computer; may not have access to server
+Lower level more important - self contained project; have control
+Internship goal - obtain experience, so when comes to project can go further
+ie ml models (will have software ready for 4th year project)
+Best way - replace ml problem with different problem (can’t access image dataset)
+Can apply same techniques to different ml problems
+
+Learn about:
+State based systems
+Vscode
+React
+
+Chat about team: Saiful, Will, Stevo, Judy, Graham
+Be patient with engineering admin; can be bureaucratic
+Think of model like a ml program; ‘hr database’ doing room classification - specialising in recognising kitchen/bathroom etc
+Have to manage this ‘database of people’
+Every time we train model (CNN/random forest), maybe using different technique
+Create new program (person), register in DB
+Nature of ‘mistakes’ - confusion matrix IMPORTANT ie how often mistake kitchen for bathroom; record of performance
+What does db look like? Not trivial to enter confusion matrix, just JSON file currently
+Can ‘employ’ as many people as possible
+Eg move from france to uk - model no longer good bc eg room division different
+(but don't necessarily get rid of old models)
+Football analogy - dont want all strikers, need some defenders etc.
+Too many; cant remember; use algorithm to select (take one person = leave another)
+Can combine skill of different models (players) - lazy / weighted voting systems; more useful
+Currently not scalable for humans for to make decisions
+
+Mini project: how can we use software to manage this?
+Can create 50 models no prob; how do we manage these?
+No single model is ever accurate enough for the entire job
+‘Win by memory not intelligence’ - alphago couldnt win after 50 games; 10^6x better than human, can search for patterns
+
+How to enter models in db? (eg mongodb)
+Program to choose; select top 5 best models based on something?
+Lazy - take avg of 5 classifications, take voting mech.
+Weighted - make ‘combined person’ (via ensemble model); process of ensemble learning where each model only make part of the decision; hierarchical, sequential way
+
+15/07: Min Will Saiful
+How should ui look to enter new model? 
+Decision tree/cnn etc.
+Will is ‘hr manager’
+May have model in db but not visible; keep in db
+CM on UI side quite hard - clever thinking needed
+From Will’s POV, even harder; requires class labels
+Ie between shower/bathroom... etc. could, require 32 labels (no. of rooms)
+How to store, how to input class labels
+Have to order, standardise - label 1, label 2… is not good enough as these could mean anything/room
+Predefined scheme - detailed, high level room classification 
+
+1st problem - How to store (could be too short with acronyms) ? 
+2nd problem - need another program for retrieval search problem; classify internal/external, provide CM
+Ideally this program finds/searches: gos to db, then runs (software stored in particular place), standard place ie in linux/unix; where is model stored/how to run
+
+3rd problem - How to take CM’s and combine to overall decision
+
+Binary classifier - y/n
+In our case, more than 2
+Based on probability, or number of cases?
+
+CM - more data, allows calculation of precision/recall
+Ensemble approach - select models that are good enough to help, depends on CM performance
+Football analogy - create person dynamically ie ‘3 strikers’
+Good when training data is limited
+Can combine sequentially, once you have the framework
+ML - ‘unlimited people’ vs unlimited budget IRL
+
+Endpoints
+Dev side - quickly test/train/pull models from DB
+Normally when image comes, best model called, classifies
+Now, an entire program is called, which is an ensemble classifier
+Tree is fixed, ‘internal/external classification’
+Program goes to db to retrieve data, then does classification
+Will is ‘HR manager’; ‘5 models should do the job’, software automatically combines models to make final decision
+Further class. - bathroom -> shower, toilet etc, goes further in to DB to find models to use
+Most ensemble models are ‘lazy’, only deal with a single, simple class. 
+Problem - academic, not industrial - ie cant differentiate between internal/external.
+Therefore need complex tree structure
+‘Simple cnn can do all classes’ - too hard, exponential relation with number of classes
+Hierarchical strategy reduces data required; only ~10k images (problem 100x easier if 100x more data)
+Wills POV - replace simple model with program; same ‘black box’ program, input/outputs introduce ‘human knowledge’ of hierarchy (software)
+Design of cnn is human knowledge - number/type of layers etc.
+Images saved on azure db, azure VM cpus/gpus used to run testing
+program to replace x with y
+With will’s tree, one model per decision; 10 nodes, each node has 5 contributions on avg.
+Will may want to label, ‘trained with matlab’ etc.
+Each model has CM; changes over time, improves
+Should we store history of CM? Versions etc.
+
+Companies reference for languages - python/pytorch for all ML, ubuntu VM on azure, S3 for storage
+
+Luke - frontend preference; look in to:
+JS node, nextjs, JS, java
+
+Need to be careful not to ask company to make too many decisions - dont confuse with backend software for testing
+
+App - database with 50 models.
+Backend - work out what quality deterioration vs optimal ensemble models, ie ‘cheap’ model w only 2 models; tradeoff
+
+Moving away from mobile deployment - webapp instead (powerful servers)
+
+Work never done before - job is to cross the river first:
+Input image - access DB - output
+Frontend UI not important
+
+Use python
+Model files are JSON
+Can python call another program to run
+First program - Take input, generate class label (dummy program)
+2nd - input hierarchical tree (visit in order)
+3rd - at every point - internal/external, bedroom/bathroom (random)
+4th - ML, call from inside python
+5th - use model from DB
+6th - use 5 models; voting based (simple ensemble)
+7th - mathematical way to decide ensemble; requires CM
+
+Which DB to use? Saiful suggests MongoDB
+Dbs are easy - how to store/input
+Start with manual, then use program to retrieve jsons; take a couple weeks
+Next - operational side, where models stored, names?, how to call?
+Model can be JS function
+Model saved as pth file (JSON w weights), then to load requires pytorch ‘holders’ for each weight, then load as state dict
+Scripts to define model must be loaded
+
+Software like client, automatically activated?
+
+will/luke took OS course, not too useful…
+‘This is model i want to run, this is hash table, this is model i want to run’
+Name of model comes from DB, then call
+client/server - john smith always awake or wake up?
+
+In reality, os is normally sleeping, send signal inside program? Event call
+
+‘Brute force wake up’ from command line
+In os - most processes are there but in ‘sleeping mode’, no CPU time
+Ie printing spool, always running but usually sleeping
+
+Saiful can help w data model
+
+Will: share python program/tree structure - needs more standardisation, name convention etc. class definitions at each node, labels, CM etc. all connected
+Luke: familiarise with python, get basic DB started
+
+Set time (ie 2/4 weeks) for complete review of design before final implementation
+Luke/Will meet weekly to discuss, Min/Saiful may come
+If luke needs details, call will
+
+Will doesnt create model every day… but interface hopefully better than cmd line
+
+Install mongodb .. as tool, can input there, dont even need to make UI
+Queries - use interface to test queries, replace with (python) program to automate
+
+16/07 - Questions for Will
+Human involvement - decision tree optimal?
+Confusion matrix format
+CR? From cm? Classification report
+Pth - json with weights - elaborate? - pytorch specific
+Point of super? Also inputs not needed --> super().__init__()
+2x Output_channels - typo?
+Describe each method briefly?
+
+Import pytorch, load model structure
+Test multi
+Load model from pth
+
+Leeway with tree structure
+No way to assess error of tree
+Split in to quite logical splits
+Assessing how individual models perform
+Ie distinction between kitchen/living
+Split external immediately
+Design decision tree via metrics?
+
+(Resnet code)
+
+C - computer vision
+
+Do need access to azure compute power to run stuff
+
+Use models
+Dynamically call models based on their performance, define tree
+
+Run on azure to access images
+Approach of doing away from company wont work unless you can access services 
+
+Create args object by hand instead of parsing, just define in code
+Default ways of defining dataset in
+
+.csv location in the dataset
+Location of dataset itself in main script
+.img path
+Self.image_arr / self.image thing -> local folder
+
+Args.model_dir -> root model file
+.. / models
+
+Jupyter plugin for vscode
+
+Might want to start training again - measure loss at end of process to fee
+
+Get rid of Run.log / run.complete
+Print instead of save to json
+
+Start dummy mode, 5 batches
+
+Batch size has to be 
+
+5 ->100 
+10,000 -> 10
+Artificially create args object, pass these
+
+Self.full data len -> 5000
+
+Q’s
+Those from namespace, data_dir, any other args?
+‘Full_wmeta’ equivalent of codex?
+don't have a 'temp/codex.csv' file anywhere - just use full_wmeta?
+
+
+22/07 - Will Min Saiful
+
+Start working on local mongodb database
+Most important part of commercial industry
+Try to start hr database for models / confusion matrix
+Can design input screen especially for models
+‘Particular screen’ - how should look
+2nd screen - queries
+Simple mechanisms
+
+Next stage - programming side, queries from elsewhere
+
+Key issue - how to call another program (model) from inside program
+Input - image, output- label (can it be read?)
+
+Problem -> saiful
+
+Targets
+-Call another program / Read output of that in my program
+-start database - CM (not that quick to input, eg 32x32 - how to do s.t mistakes aren’t made), ‘home address’ (directory path) of model
+
+..then meeting for fields
+
+Demonstrations with database next week - big deal
+
+DB - don’t bother learning syntax, can refer to documentation
+Abstract pytorch away
+
+Beyond indicate myth slush before embrace drift beyond park bird hire cancel
+
+Create mongo acc, use mongodb as service
+(recorded…)
+Curl / postman
+
+29/07 Min Will Saiful
+
+atART TO CODE HEIARCHICAL TREE
+If dont know how t call, comment etc#
+Meanwhile; simple one
+‘Random function’ / switch between branches
+5 functions; random switch; test - bad results but works
+(Means wills tree works)
+Replace random slowly
+Write simpe to start with
+‘Always switch to internal/external’
+Input / output
+Build bridge -  both ends then middle, not one side!
+
+
+Will - local instead of from DB
+Decision tree badly coded
+Priority - get running, swap out each part, integrarte w what saifuls built
+Image ->> label
+
+05/08 - Min Will
+Luke discussed general progress - placing existing CM / CR JSONs in to test DB
+(Discussed additional data for db , eg json cm labels, argos)
+(discussed use of ‘logbook’)
+(planned luke’s demonstration of provisional db in next thurs meeting)
+
+06/08 - Saiful
+-rename id to name
+-rename collections to final name
+-meaningful names (ie confus. matrices etc.)
+-normalized data form? -chances of introducing error?
+-ASCID
+
+objectives:
+-how/what data generated; example data structure
+-what are the queries/questions we want to answer
+-therefore decide on CM JSON structure
+
+18/08 Min WIll Saiful
+Discussion of min’s document ‘IMATOD Ensemble Model Decision’ (unfinished) - positive reception from all in attendance
+Discussion of weighting function for each model; can change ‘weight’ given to each model based on factors such as accuracy (Min cut out at this point so I’m not 100% clear on this)
+(analogy to microsoft algorithm to detect body parts)
+
+Discussion of Will’s DB format document:
+
+Saiful:
+Don’t use ‘id’/’_id’ fields as they are reserved by Mongo
+Is proposed data structure consistent between all models?
+In CM you used class labels as ‘keys’; 2 possible approaches: keep models names, or keep keys and create ‘separate levels’ for data (?)
+Is CR related from CM; will this change as CM changes? Is separate CR even necessary?
+
+Luke:
+Proposed data structure much clearer
+Shouldn’t be too difficult to implement in practice
+Should make querying much simpler
+Labelling of confusion_matrix.class_labels (class_label_keys in new schema) is currently quite confusing - arrays contain keys/values which are just numbers, leading to useless values simply as 0:0 , 1:1 etc.
+
+Update from Luke of pytorch progress - had a setback due to an OS issue, whereby all data was deleted. Most work was cloud based (eg mongo), but pytorch code had to be re-edited. Will commit all changes to Github from now on...
+
+26/08 Min Will Saiful
+Luke: Away in Edinburgh Monday/Tuesday, not been back for long. Been working with the pymongo package to draw data from the database to perform simple scripting/queries/control loops within Python.
+
+Min (to Luke): Would you be interested in further work within this company/area over the coming year? (Min cut out here so I couldn’t completely understand this, but I understand there is need for another employee in a similar capacity to my current role, when I am finished. I do not think I’d be available for this, due to my role with Eurofins beginning on the 20th).
+
+Discussion on predictors of property values in different locations - garage size in the US, etc.
+
+Lots of small ‘data-related’ tasks that would be very useful to be solved - eg detecting locks on doors.
+
+Further brief discussion of Min’s document ‘IMATOD Ensemble Model Decision’.
+
+Notes for will on DB:
+Looks like an ideal format; make sure the models have names different to classifiers so can be called to compare but still differentiated; also ensure DB appropriately sanitised 
+
+02/09
+--missed meeting--
+Luke progress report (from email):
+‘Since I got back yesterday I’ve simply been further investigating pulling Mongo data in to python via Pymongo and performing simple queries / control loops with this (ie comparing entries based on accuracy rating) . I will upload this to my github later and share, and am happy to demo some of this next week.’
+After further chat with Will, agreed to produce final report to summarise progress made over the internship; provide ‘instruction manual’ for Will to take over control of DB with.
