@@ -1,4 +1,4 @@
-// basic queries, using the "models" collection as an example
+// basic Mongosh queries, using the "models" collection as an example
 
 // simple test:
 db.models.findOne()
