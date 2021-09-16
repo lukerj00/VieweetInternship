@@ -296,3 +296,29 @@ Looks like an ideal format; make sure the models have names different to classif
 Luke progress report (from email):
 ‘Since I got back yesterday I’ve simply been further investigating pulling Mongo data in to python via Pymongo and performing simple queries / control loops with this (ie comparing entries based on accuracy rating) . I will upload this to my github later and share, and am happy to demo some of this next week.’
 After further chat with Will, agreed to produce final report to summarise progress made over the internship; provide ‘instruction manual’ for Will to take over control of DB with.
+
+09/09 Min Will Saiful
+(notes missing)
+General catchup
+Continue progress on report; meet with Saiful next Monday to troubleshoot Pytorch code.
+
+15/09 Min Will Saiful (Final meeting)
+Notes on report:
+remember to include entire schema
+talk about name convention for models
+'based on my understanding this is convention we have'
+
+Going forward:
+more machine learning/python - let will/min learn, 4yp if goes to plan
+will/min would love me to look more in to python programming
+if I know anyone who want to go in to python further, let him know
+
+Other notes:
+Another database for same model/trained differently
+'hr database for this group of models/ for other groups of models'
+If anyone has free time - manual labelling
+'labelling day' for freshers?
+Difficulty finding a venue - could do remotely ? But in person is better, remote/pay more?
+Goal: 10k datasets labelled
+
+fin
