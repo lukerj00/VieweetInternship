@@ -1,24 +1,29 @@
-// general connection procedure (from cmd / mongosh):
+This document details general admin commands for working with the database from the Mongosh shell / cmd.
+
+// general connection procedure from mongosh / cmd:
 
 1. Connect to Atlas cluster:
 mongo "mongodb+srv://<username>:<password>@<cluster>.mongodb.net/admin" // or just paste srv connection string (see https://docs.mongodb.com/manual/reference/connection-string/) in to Compass
 
 2. Navigate to relevant collection:
-use <collection>
+use <collection name>
 
-// importing / exporting DBs:
-/JSON:
+// importing / exporting DBs (these commands must be run from cmd/bash):
+JSON:
 mongoimport
 mongoexport
 
 BSON:
 mongorestore
-mongodump
+eg. mongodump -d vieweet_prototype_01 -c args
 
-// import multiple json files at once:
+mongodump
+eg. mongorestore -d vieweet_prototype_db -c args dump/some_collection_location.bson
+
+// import multiple json files at once within mongosh / cmd (easier in Pymongo):
 C:\MongoDB\Server\3.0\bin>
   for %i in (C:\Users\lukej\Documents\VieweetInternship\DataForLuke-20210816T212605Z-001\DataForLuke\models) do 
-    mongoimport --file %i --type json --db vieweet_prototype_01 --collection models
+    mongoimport --file %i --type json --db vieweet_prototype_db --collection models
 
 // merge collections:
 db.collection1.aggregate([{
@@ -46,6 +51,8 @@ db.models_small.aggregate([{
 {$out: "models_small"}
 ])
 
+OR:
+
 db.models_small.aggregate([
    {
       $lookup: {
@@ -68,7 +75,7 @@ db.collection.renameCollection(target, dropTarget)
 // delete collection
 db.collection.drop()
 
-//CRUD (create, read, update, delete https://docs.mongodb.com/manual/crud/)
+//CRUD operations (create, read, update, delete - see https://docs.mongodb.com/manual/crud/)
 
 // create (insert) document(s)
 db.collection.insertOne()

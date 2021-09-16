@@ -1,4 +1,4 @@
-// basic Mongosh queries, using the "models" collection as an example
+This document contains basic find queries from within the mongosh shell, with the 'models' collection used as an example
 
 // simple test:
 db.models.findOne()
